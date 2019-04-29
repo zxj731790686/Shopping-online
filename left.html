@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>下拉菜单</title>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        a {
+            color: #f39800;
+            text-decoration: none;
+        }
+
+        .list-title {
+            display: inline-block;
+            width:200px;
+            border-top: solid 1px #ccc;
+            border-left: solid 1px #ccc;
+            border-right: solid 1px #ccc;
+            background: #FFF;
+            text-align: center;
+            height: 60px;
+            line-height: 60px;
+            font-size: 20px;
+            color: #f39800;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .accordion {
+            width: 100%;
+            max-width: 200px;
+            border: solid 1px #ccc;
+            background: #FFF;
+        }
+
+        .accordion .link {
+            cursor: pointer;
+            display: block;
+            padding: 15px 15px 15px 42px;
+            color: #4D4D4D;
+            font-size: 14px;
+            font-weight: 700;
+            border-bottom: 1px solid #CCC;
+            position: relative;
+        }
+
+        .accordion li:last-child .link {
+            border-bottom: 0;
+        }
+
+        .accordion li {
+            cursor: pointer;
+        }
+
+        .accordion li i {
+            position: absolute;
+            top: 16px;
+            left: 12px;
+            font-size: 18px;
+            color: #595959;
+        }
+
+
+        .accordion li.open .link {
+            color: #f39800;
+        }
+
+        .accordion li.open i {
+            color: #f39800;
+        }
+
+
+        .submenu {
+            display: none;
+            background: #f5f5f5;
+            font-size: 14px;
+        }
+
+        .submenu li {
+            border-bottom: 1px solid #d6d7dc;
+        }
+
+        .submenu a {
+            display: block;
+            text-decoration: none;
+            color: #666;
+            padding: 12px;
+            padding-left: 42px;
+        }
+
+        .submenu a:hover, .submenu li.current a {
+            background: #f39800;
+            color: #FFF;
+        }
+
+    </style>
+</head>
+<body>
+<div>
+    <a class="list-title">商品分类</a>
+    <ul id="accordion" class="accordion">
+        <li>
+            <div class="link"><span>干粮类</span></div>
+            <ul class="submenu">
+                <li><a>面包</a></li>
+                <li><a>饼干</a></li>
+                <li><a>膨化食品</a></li>
+            </ul>
+        </li>
+        <li>
+            <div class="link"><span>水</span></div>
+            <ul class="submenu">
+                <li><a>碳酸饮料</a></li>
+                <li><a target="body" href="/javascript学习/商品列表页面/商品列表页面.html">牛奶</a></li>
+                <li><a>矿泉水</a></li>
+                <li><a>果汁</a></li>
+            </ul>
+        </li>
+        <li>
+            <div class="link"><span>优惠大礼包</span></div>
+            <ul class="submenu">
+                <li><a>三只松鼠</a></li>
+                <li><a>良品铺子</a></li>
+                <li><a>百草味</a></li>
+            </ul>
+        </li>
+        <li>
+            <div class="link"><span>食肉者的天堂</span></div>
+            <ul class="submenu">
+                <li><a>牛肉</a></li>
+                <li><a>鸡肉</a></li>
+                <li><a>鱼</a></li>
+            </ul>
+        </li>
+        <li>
+            <div class="link"><span>速食产品</span></div>
+            <ul class="submenu">
+                <li><a>方便面</a></li>
+                <li><a>懒人小火锅</a></li>
+                <li><a>速食米饭</a></li>
+            </ul>
+        </li>
+
+    </ul>
+
+</div>
+<script>
+    $(function () {
+        var Accordion = function (el, multiple) {
+            this.el = el || {};
+            this.multiple = multiple || false;
+
+            // Variables privadas
+            var links = this.el.find('.link');
+            // Evento
+            links.on('click', {
+                el: this.el,
+                multiple: this.multiple
+            }, this.down)
+        };
+
+        Accordion.prototype.down = function (e) {
+            var $el = e.data.el;
+            $this = $(this);
+            $next = $this.next();
+
+            $next.slideToggle();
+            $this.parent().toggleClass('open');
+
+            if (!e.data.multiple) {
+                $el.find('.submenu').not($next).slideUp().parent().removeClass('open');
+            }
+        };
+
+        var accordion = new Accordion($('#accordion'), false);
+        $('.submenu li').click(function () {
+            $(this).addClass('current').siblings('li').removeClass('current');
+        });
+    });
+</script>
+</body>
+</html>
